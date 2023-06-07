@@ -7,12 +7,15 @@
 import math
 import random
 import pygame
+from pygame.locals import *
 import block
 import constants
-
+import bd
+import buttons
+import records
 class Tetris(object):
 
-    def __init__(self, bx, by):
+    def __init__(self,bx,by):
         # Вычислить разрешение игрового поля на основе необходимого количества блоков.
         self.resx = bx * constants.BWIDTH + 2 * constants.BOARD_HEIGHT + constants.BOARD_MARGIN
         self.resy = by * constants.BHEIGHT + 2 * constants.BOARD_HEIGHT + constants.BOARD_MARGIN
@@ -92,14 +95,17 @@ class Tetris(object):
         pygame.font.init()
         self.myfont = pygame.font.SysFont(pygame.font.get_default_font(), constants.FONT_SIZE)
         self.screen = pygame.display.set_mode((self.resx, self.resy))
+
         pygame.display.set_caption("Tetris")
         self.set_move_timer()
         self.done = False
         self.game_over = False
+        self.menu_button=False
         self.new_block = True
         self.print_status_line()
         while not (self.done) and not (self.game_over):
             # Получить блок и запустить игровую логику
+            #self.menu()
             self.get_block()
             self.game_logic()
             self.draw_game()
@@ -115,6 +121,7 @@ class Tetris(object):
         self.print_text(string, constants.POINT_MARGIN, constants.POINT_MARGIN)
 
     def print_game_over(self):
+        bd.execute_score(self.score)
         self.print_center(["Вы проиграли", "Нажмите \"q\" для выхода"])
         pygame.display.flip()
         while True:
@@ -210,6 +217,7 @@ class Tetris(object):
         pygame.draw.rect(self.screen, constants.WHITE, self.board_right)
         self.print_status_line()
 
+
     def get_block(self):
         if self.new_block:
             # Получить блок и добавить его в список блоков
@@ -228,5 +236,9 @@ class Tetris(object):
         pygame.display.flip()
 
 
+
+
+
+
 if __name__ == "__main__":
-    Tetris(16, 30).run()
+    Tetris(16,30).run()
